@@ -4,6 +4,6 @@ def NumAaBb(k, n):
 	total = pow(2,k)
 	for i in range(n,total+1):
 		print(i)
-		sum += float(factorial(i))/factorial(total-i)*pow(float(1)/4,i)*pow(float(3)/4,total-i)
+		sum += float(factorial(total))/(factorial(total-i)*factorial(i))*pow(float(1)/4,i)*pow(float(3)/4,total-i)
 	return sum
-print(NumAaBb(2,1))
+print(NumAaBb(6,16))
