@@ -16,27 +16,29 @@ dict = {"TTT": "F",      "CTT": "L",      "ATT": "I",      "GTT": "V",
 "TGA": "Stop",   "CGA": "R",      "AGA": "R",      "GGA": "G",
 "TGG": "W",      "CGG": "R",      "AGG": "R",      "GGG": "G"}
 
-str1 = """>Rosalind_99
-AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG"""
+str1 = """>Rosalind_2088
+CTTCTCGGTCTTACCTCATGATGGGCACATGGATATTAATCAACTCTACCGTGTGTCCGGCGCAGCTGATGCTGAATAGTACAACAGGCTCCCATCTCATTATTGTTCTGAGCTATATTAGTCCATCAACGGTCCACCAGAACACGGTTTGGTGCGTGCCCTCTGCTAGATACCCTTCGCATCGGACCTTCGGTAAACTGTGCTGACTGCTTCCGCACGCGGTCTCCTGCAACGAGACATGGCGCCGAACACTAGCAGTATCAACACATAAGAACATACTGACAAACACCAGAATGTTCAGTGTATAAAGTCTTCAGCATCCGTCATCGCAAGCAGGTATGAGAAACAAAACTTTCACCTTGCTCGGTACTAGGATTTGGATTCATCTACCAGTGAGAGCTTTTGTCATGCCAAATCGGTGCGTACAACTATAGCTATAGTTGTACGCACCGATTTGGCATCATACGGAACGCTTCCGATCTCGAACAACGCTGTAACATAGCTCCCTATCGAGTCACTGTACTATGTTTTGACGACTCACTGCCAGAAATAACCTCACGCTTAATGGAGAGCACGGTTGAGTAGGGTGGTCTCCTCATGCTAGAAGGAAGACCACTTCGTTTTATGAAACTGAGGTGACCGCAACTTCCCTGCCAGCAAGGTAAAGTTACGTACAGTTCAAAAATTATGATCTCCGCCATTGAGTTCGCTACGATCCATACTGACCGAATATGGTCGTCCTTGGCAGAAGGCTGGGACAACGCGATCCTTTCAGGATGTTTCATTTTGTACTGTTAAGATGCTCGAGTAAATGAGTGAAGGGGTCACCTGGTCAAAGAACGTCGACTTCCCTCCAATTCCTGAACTA"""
 data = str1.split("\n")[1:]
-print(data)
+comp_dic = {"A": "T", "T":"A", "C": "G", "G": "C"}
+comp_str1 = [comp_dic[key] for key in data[0]]
+data.append(''.join(comp_str1)[::-1])
+# print(data)
+end_set = set()
 for dat in data:
 	starts = [m.start() for m in re.finditer("(?=ATG)",dat)]
 	ends = [m.start() for m in re.finditer("(?=TAA|TAG|TGA)",dat)]
-	print(starts)
-	print(ends)
+	# print(starts)
+	# print(ends)
 	for start in starts:
 		cur_end = None
 		for end in ends:
-			if end > start:
+			if end > start and (end-start)%3==0:
 				cur_end = end
 				break
 		# print(cur_end)
 		if cur_end != None:
 			text = dat[start:cur_end]
-			if len(text)%3 != 0:
-				continue
-			print(text)
+			# print(text)
 			i = 0
 			out = ""
 			while i < len(text):
@@ -44,4 +46,6 @@ for dat in data:
 				if amino != "Stop":
 					out += amino
 				i = i+3
-			print(out)
+			# print(out)
+			end_set.add(out)
+print('\n'.join(list(end_set)))
